@@ -1,0 +1,18 @@
+log:
+  path: "./logs"
+  max_size: 10
+  max_backups: 5
+  max_age: 90
+
+database:
+  username: "root"
+  password: ""
+  host: "127.0.0.1"
+  port: 3306
+  dbname: "db_linkforge"
+
+
+redis:
+  addr: "127.0.0.1:6379"
+  password: ""
+  db: 0
