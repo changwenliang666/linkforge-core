@@ -1,6 +1,10 @@
-package auth
+package authRouter
 
-import "github.com/gin-gonic/gin"
+import (
+	"linkforge-core/service"
+
+	"github.com/gin-gonic/gin"
+)
 
 func InitAuthRouter(api *gin.Engine) {
 	authGroup := api.Group("/auth")
@@ -10,6 +14,10 @@ func InitAuthRouter(api *gin.Engine) {
 				"msg": "hello world",
 			})
 		})
-		authGroup.POST("/registry")
+
+		// 注册接口
+		authGroup.POST("/registry", service.UserRegistry)
+		// 登录接口
+		authGroup.POST("/login", service.UserLogin)
 	}
 }

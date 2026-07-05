@@ -2,7 +2,10 @@ package middleware
 
 import (
 	"fmt"
+	"linkforge-core/pkg/app"
 	"linkforge-core/pkg/auth"
+	"linkforge-core/pkg/e"
+	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -10,6 +13,7 @@ import (
 
 func JWTAuth() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		appG := app.Gin{C: ctx}
 		requestRouter := ctx.FullPath()
 		fmt.Println("fullPath", requestRouter)
 		if auth.WhitePageContain(requestRouter) { // 白名单接口，不进行token校验
@@ -21,7 +25,7 @@ func JWTAuth() gin.HandlerFunc {
 		parts := strings.SplitN(authHeader, " ", 2)
 
 		if len(parts) != 2 || parts[0] != "Bearer" {
-			fmt.Println("token格式不合法")
+			appG.Response(http.StatusOK, e.INVALID_TOKEN, nil)
 			ctx.Abort()
 			return
 		}
@@ -29,12 +33,12 @@ func JWTAuth() gin.HandlerFunc {
 		userInfo, authError := auth.ParseToken(parts[1])
 
 		if authError != nil {
-			fmt.Println("身份信息认证失败")
+			appG.Response(http.StatusOK, e.INVALID_TOKEN, nil)
 			ctx.Abort()
 			return
 		}
 
-		ctx.Set("userId", userInfo.UserId)
+		ctx.Set("user_id", userInfo.UserId)
 		ctx.Set("username", userInfo.Username)
 		ctx.Next()
 	}

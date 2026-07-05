@@ -1,21 +1,25 @@
 package app
 
-import "github.com/gin-gonic/gin"
+import (
+	"linkforge-core/pkg/e"
+
+	"github.com/gin-gonic/gin"
+)
 
 type Gin struct {
-	c *gin.Context
+	C *gin.Context
 }
 
 type Response struct {
-	Code int         `json:"code"`
-	Msg  string      `json:"msg"`
-	Data interface{} `json:"data"`
+	Code int    `json:"code"`
+	Msg  string `json:"msg"`
+	Data any    `json:"data"`
 }
 
-func (g *Gin) Response(code int, msg string, data interface{}) {
-	g.c.JSON(code, Response{
-		code,
-		msg,
+func (g *Gin) Response(httpCode, businessCode int, data any) {
+	g.C.JSON(httpCode, Response{
+		businessCode,
+		e.GetResponseMsg(businessCode),
 		data,
 	})
 }

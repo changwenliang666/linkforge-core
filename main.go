@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"linkforge-core/config"
-	"linkforge-core/datebase"
+	"linkforge-core/database"
 	routers "linkforge-core/router"
 	"os"
 )
@@ -16,7 +16,7 @@ func main() {
 		return
 	}
 
-	dbErr := datebase.InitDB()
+	dbErr := database.InitDB()
 	if dbErr != nil {
 		fmt.Println("数据库连接失败")
 		os.Exit(1)

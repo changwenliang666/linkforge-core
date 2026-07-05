@@ -50,7 +50,9 @@ func ParseToken(tokenStr string) (*CustomClaims, error) {
 }
 
 var whitePageList = map[string]bool{
-	"/auth/test": true,
+	"/auth/test":     true,
+	"/auth/registry": true,
+	"/auth/login":    true,
 }
 
 func WhitePageContain(path string) bool {
